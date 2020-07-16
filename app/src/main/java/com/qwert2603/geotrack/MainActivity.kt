@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             pointsCount_TextView.text = "Total: $it"
         })
         vm.accuracy.observe(this, Observer {
-            accuracyCount_TextView.text = "Accuracy: $it"
+            accuracyCount_TextView.text = it
         })
 
         vm.started.observe(this, Observer {

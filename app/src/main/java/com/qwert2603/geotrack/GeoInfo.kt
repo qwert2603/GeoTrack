@@ -8,7 +8,8 @@ class GeoInfo(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val lat: Double,
     val lon: Double,
-    @ColumnInfo(index = true) val millis: Long
+    @ColumnInfo(index = true) val millis: Long,
+    val speed: Float
 )
 
 @Dao
@@ -29,7 +30,7 @@ interface GeoInfoDao {
     suspend fun deleteAllGeoInfos()
 }
 
-@Database(entities = [GeoInfo::class], version = 2, exportSchema = false)
+@Database(entities = [GeoInfo::class], version = 3, exportSchema = false)
 abstract class GeoInfoDatabase : RoomDatabase() {
     abstract fun getInfoDao(): GeoInfoDao
 }

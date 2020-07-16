@@ -20,22 +20,23 @@ class MainActivityViewModel : ViewModel() {
 
     val started = MutableLiveData(false)
 
-    val accuracy = MutableLiveData(10_000f)
+    val accuracy = MutableLiveData("")
 
     private val locationManager =
         App.APP_CONTEXT.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
     private val locationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            logD("accuracy=${location.accuracy} bearing=${location.bearing} speed=${location.speed}")
-            accuracy.value = location.accuracy
+            accuracy.value =
+                "accuracy=${location.accuracy}\nbearing=${location.bearing}\nspeed=${location.speed}"
 
             viewModelScope.launch {
                 val geoInfo = GeoInfo(
                     id = 0,
                     lat = location.latitude,
                     lon = location.longitude,
-                    millis = System.currentTimeMillis()
+                    millis = System.currentTimeMillis(),
+                    speed = location.speed
                 )
                 geoInfoDatabase.getInfoDao().insertGeoInfo(geoInfo)
             }
