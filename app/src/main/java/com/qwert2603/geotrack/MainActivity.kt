@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -49,8 +50,17 @@ class MainActivity : AppCompatActivity() {
             stop_Button.isVisible = it
         })
 
-        start_Button.setOnClickListener { vm.start() }
-        stop_Button.setOnClickListener { vm.stop() }
+        start_Button.setOnClickListener {
+            vm.start()
+            ContextCompat.startForegroundService(
+                this,
+                Intent(this, TheForegroundService::class.java)
+            )
+        }
+        stop_Button.setOnClickListener {
+            vm.stop()
+            stopService(Intent(this, TheForegroundService::class.java))
+        }
         send_Button.setOnClickListener {
             lifecycleScope.launch {
                 val text = vm.geoInfoDatabase.getInfoDao().getAllGeoInfos()
